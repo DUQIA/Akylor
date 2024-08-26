@@ -1,0 +1,88 @@
+/* 表单 */
+form {
+  padding-top: 17vh;
+}
+
+/* 手机适配 */
+@media screen and (width <= 600px) {
+form {
+  padding-top: 14vh;
+}
+}
+
+/* 链接 */
+a {
+  text-decoration: none;
+  margin: 0 5px;
+  width: auto;
+  align-self: end;
+  padding: 8px 12px;
+  border: 1px solid #ccc; /* 添加边框 */
+  border-radius: 4px; /* 圆角 */
+  box-sizing: border-box; /* 包含内边距和边框 */
+  border-color: dodgerblue;
+  background-color: white;
+  color: dodgerblue;
+}
+
+/* 输入 */
+input {
+  width: inherit;
+  padding: 8px 12px;
+  border: 1px solid #ccc; /* 添加边框 */
+  border-radius: 4px; /* 圆角 */
+  box-sizing: border-box; /* 包含内边距和边框 */
+  margin-bottom: 10px;
+}
+
+/* 按钮 */
+input[type='submit'] {
+  width: auto;
+  align-self: end;
+  padding: 8px 12px;
+  border: 1px solid #ccc; /* 添加边框 */
+  border-radius: 4px; /* 圆角 */
+  box-sizing: border-box; /* 包含内边距和边框 */
+  border-color: dodgerblue;
+  background-color: white;
+  color: dodgerblue;
+}
+
+input[type='submit']:hover {
+  cursor: pointer;
+}
+
+/* 输入框聚焦样式 */
+input:focus-visible, input[type='submit']:active, a:active {
+  outline: thin solid dodgerblue;
+}
+
+/* 容器 */
+.container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 300px; /* 限制最大宽度 */
+  margin: 0 auto; /* 居中 */
+}
+
+/* 密码框 */
+.pass-show-hide {
+  width: inherit;
+  position: relative; /* 使子元素相对于这个容器定位 */
+  display: inline-flex; /* 3.1 内联按钮 */
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.pass-show-hide button {
+  padding: 8px 12px;
+  margin-bottom: 7px;
+  right: 0;
+  position: absolute; /* 3.1 绝对定位 */
+  text-align: right; /* 3.1 靠右对齐 */
+  background: none; /* 移除默认背景 */
+  border: none; /* 移除默认边框 */
+  cursor: pointer; /* 鼠标悬停时显示手型 */
+}
