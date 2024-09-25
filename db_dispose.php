@@ -77,17 +77,17 @@ class Db {
     if (!isset($_COOKIE['UID'])) {
         check();
     }
-    $stmt = $this->conn->prepare("SELECT user, pass, session_id, is_active FROM users WHERE session_id = ?");
     $cookie = htmlspecialchars($_COOKIE['UID'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+    $stmt = $this->conn->prepare("SELECT user, pass, session_id, is_active FROM users WHERE session_id = ?");
     if ($stmt) {
       $stmt->bind_param('s', $cookie);
       $stmt->execute();
       $result = $stmt->get_result(); // 获取结果
-    }
-    if ($result->num_rows > 0) {
-      // 获取cookie
-      $row = $result->fetch_assoc();
-      return $row['session_id'];
+      if ($result->num_rows > 0) {
+        // 获取cookie
+        $row = $result->fetch_assoc();
+        return $row['session_id'];
+      }
     } // else { // 唯一 id 检测
     //   throw new Exception('Cookie verification failed');
     // }
