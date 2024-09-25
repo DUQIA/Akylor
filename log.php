@@ -1,4 +1,5 @@
 <?php
+
 function log_error($message, $filename) {
     // 验证文件名，确保没有目录遍历攻击
     if (preg_match('/^[a-zA-Z0-9_\-]+$/', $filename) !== 1) {
@@ -20,6 +21,5 @@ function log_error($message, $filename) {
     }
 
     // 记录错误日志
-    error_log($message, 3, $logFile);
+    error_log($message . PHP_EOL, 3, $logFile);
 }
-?>

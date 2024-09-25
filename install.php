@@ -1,16 +1,22 @@
 <?php
+
 $file = __DIR__ . '/language.php'; // 使用绝对路径
-$log = __DIR__ . '/log.php';
-if (file_exists($file) && is_readable($log)) {
-    require($file);
-    require($log);
+$id_file = __DIR__ . '/session_id.php';
+$log_file = __DIR__ . '/log.php';
+
+if (file_exists($file) && is_readable($id_file) && is_readable($log_file)) {
+    require $file;
+    require_once $id_file;
+    require $log_file;
 } else {
     die('File does not exist');
 }
 $language = LANGUAGE;
 $translations = TRANSLATIONS;
 
-session_start();
+// 启动会话
+start_session();
+
 // 获取当前协议
 $protocol = (!empty($_SESSION['HTTPS']) && $_SESSION['HTTPS'] !== 'off') ? 'https' : 'http';
 
@@ -29,25 +35,43 @@ function  sql_conn() {
 // 创建数据库
 function sql_create($conn) {
     $sql_users = 'users';
+    $sql_ip_log = 'ip_log';
     // 如果表创建，就跳过
     $sql = "CREATE TABLE IF NOT EXISTS {$sql_users} (
         id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
         user VARCHAR(20) NOT NULL,
         pass VARCHAR(100) NOT NULL,
+        session_id VARCHAR(255),
         is_active BOOLEAN DEFAULT FALSE,
         reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )";
+    $sql_ip = "CREATE TABLE IF NOT EXISTS {$sql_ip_log} (
+      id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+      ip VARCHAR(39) NOT NULL,
+      country VARCHAR(50) NOT NULL,
+      timestamp INT(10) UNSIGNED NOT NULL,
+      request_method VARCHAR(10) NOT NULL,
+      protocol VARCHAR(10) NOT NULL,
+      request_code INT(3) UNSIGNED NOT NULL,
+      accessed_file VARCHAR(255) NOT NULL,
+      user_agent VARCHAR(255) NOT NULL,
+      time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )";
     $conn->query($sql);
+    $conn->query($sql_ip);
 
     // 插入管理账户
     $ad_name = htmlspecialchars(filter_input(INPUT_POST, 'ad_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
     $ad_pass = htmlspecialchars(filter_input(INPUT_POST, 'ad_pass', FILTER_SANITIZE_FULL_SPECIAL_CHARS), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
-    $stmt = $conn->prepare("INSERT INTO {$sql_users} (user, pass) VALUES (?, ?)");
+    $hashed_pass = password_hash($ad_pass, PASSWORD_ARGON2I);
+    $cookie = htmlspecialchars($_COOKIE['UID'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+    $stmt = $conn->prepare("INSERT INTO {$sql_users} (user, pass, session_id) VALUES (?, ?, ?)");
     if ($stmt) {
-        $stmt->bind_param('ss', $ad_name, password_hash($ad_pass, PASSWORD_ARGON2I));
+        $stmt->bind_param('sss', $ad_name, $hashed_pass, $cookie);
         $stmt->execute();
         $stmt->close();
     }
+    $conn->close();
 }
 
 // 写入config文件
@@ -57,7 +81,7 @@ function write_config() {
         "define('DB_USER', '{$_SESSION['db_user']}');\n" .
         "define('DB_PASS', '{$_SESSION['db_pass']}');\n" .
         "define('DB_NAME', '{$_SESSION['db_name']}');\n" ;
-    file_put_contents('config.php', $config_content, LOCK_EX);
+    file_put_contents(__DIR__ . '/config.php', $config_content, LOCK_EX);
 }
 
 // 获取当前步骤
@@ -74,13 +98,11 @@ function install_step(&$step) {
                     $_SESSION['db_pass'] = htmlspecialchars(filter_input(INPUT_POST, 'db_pass', FILTER_SANITIZE_FULL_SPECIAL_CHARS), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
                     $_SESSION['db_name'] = htmlspecialchars(filter_input(INPUT_POST, 'db_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
                     $conn = sql_conn();
-                    $conn->close();
                     $step = 2;
                     break;
                 case 2:
                     $conn = sql_conn();
                     sql_create($conn);
-                    $conn->close();
                     write_config();
                     // 创建账户完成后，删除敏感信息
                     unset($_SESSION['db_host'], $_SESSION['db_user'], $_SESSION['db_pass'], $_SESSION['db_name']);
@@ -111,7 +133,7 @@ if ($step === 1) {
 } elseif ($step === 4) {
   $step = 4;
 } else {
-  header("Location: " . $_SERVER['PHP_SELF']);
+  header("Location: " . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'));
 }
 ?>
 <!DOCTYPE html>
@@ -135,7 +157,7 @@ if ($step === 1) {
           <input type="text" name="db_user" id="db_user" placeholder="<?php echo $translations['db_user']; ?>" required><br>
           <div class="pass-show-hide">
             <input type="password" name="db_pass" id="pass" placeholder="<?php echo $translations['db_pass']; ?>" autocomplete="off" required>
-            <button type="button" onclick="showHide()"><img src="./svg/preview-open.svg" alt="preview" id="toggle_password"></button>
+            <button type="button" id="toggle"><img src="./svg/preview-open.svg" alt="preview" id="toggle_password"></button>
           </div>
           <input type="text" name="db_name" id="db_name" placeholder="<?php echo $translations['db_name']; ?>" required><br>
           <input type="submit" id="next" value="<?php echo $translations['next']; ?>">
@@ -148,7 +170,7 @@ if ($step === 1) {
           <input type="text" name="ad_name" id="ad_name" maxlength="20" size="20" placeholder="<?php echo $translations['ad_name']; ?>" required autofocus><br>
           <div class="pass-show-hide">
             <input type="password" name="ad_pass" id="pass" maxlength="20" size="20" placeholder="<?php echo $translations['ad_pass']; ?>" autocomplete="off" required><br>
-            <button type="button" onclick="showHide()"><img src="./svg/preview-open.svg" alt="preview" id="toggle_password"></button>
+            <button type="button" id="toggle"><img src="./svg/preview-open.svg" alt="preview" id="toggle_password"></button>
           </div>
           <input type="submit" id="submit" value="<?php echo $translations['submit']; ?>">
         </div>
@@ -159,7 +181,7 @@ if ($step === 1) {
           <h1><img src="./Akylor.ico" alt="icon" style="width: 100px;"></h1>
           <h1><?php echo $translations['complete']; ?></h1>
           <span>
-            <a href="<?php echo $protocol . $_SERVER['HTTP_HOST'] ?>"><?php echo $translations['home']; ?></a>
+            <a href="<?php echo $protocol . htmlspecialchars($_SERVER['HTTP_HOST'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>"><?php echo $translations['home']; ?></a>
             <a href="./login.php"><?php echo $translations['login']; ?></a>
           </span>
         </div>
@@ -174,6 +196,21 @@ if ($step === 1) {
           </span>
         </div>
       </body>
+      <?php
+        $db = __DIR__ . '/db_dispose.php';
+        if (file_exists($db)) {
+          include $db;
+        } else {
+          die('File does not exist');
+        }
+        try {
+          // IP记录
+          $db_class = new Db();
+          $db_class->dbIp();
+        } catch (Exception $i) {
+          log_error($i->getMessage(), 'install');
+        }
+      ?>
     <?php endif; ?>
 </form>
 </html>

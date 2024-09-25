@@ -1,0 +1,390 @@
+:root {
+  --main-bg-color: #e5e5e5;
+  --header-bg-color: #d3d9e3;
+  --text-color-dark: #464646;
+  --text-color-light: #636363;
+  --link-color: dodgerblue;
+  --white-color: white;
+  --tr-color: #dddddd;
+  --select-color: #1e90ff;
+}
+
+body {
+  margin: 0; /* 页边空白 */
+  background-color: var(--main-bg-color);
+}
+
+/* 系统信息 */
+.appose h3 {
+  margin: 5px 10px;
+  font-size: 18px;
+  color: var(--text-color-dark);
+}
+
+/* 消息标题 */
+.appose b {
+  padding: 0 10px;
+  font-size: 15px;
+  color: #262525;
+}
+
+/* 消息数据 */
+.appose p {
+  padding: 0 10px;
+  font-size: 12px;
+  color: #8f8a8a;
+}
+
+/* 表格 */
+.menu table {
+  width: inherit;
+  cursor: pointer;
+}
+
+/* 标题 */
+.menu th {
+  display: flex;
+  font-size: xx-large;
+  align-items: stretch;
+  -webkit-text-fill-color: transparent;
+  background: linear-gradient(94.75deg, rgb(250, 189, 137) 0%, rgb(242, 119, 110) 43.66%, rgb(168, 20, 113) 64.23%, rgb(29, 17, 121) 83.76%, rgb(8, 170, 236) 100%);
+  background-clip: text;
+}
+
+/* 图标 */
+.menu th img {
+  width: 45px;
+  padding: 0 15px;
+}
+
+/* 单元 */
+.menu td {
+  background-color: #f1f4ff;
+  border-radius: 5px;
+}
+
+/* 文本 */
+.menu td a {
+  display: inline-block; /* 使链接成为行内块元素 */
+  padding: 8px 0;
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  border-radius: 5px;
+}
+
+/* 图标 */
+.menu td a img {
+  padding: 0 10px 0 28px;
+}
+
+/* 链接样式 */
+a {
+  color: black;
+  text-decoration: none;
+}
+
+/* 容器 */
+.container {
+  min-height: 100vh;
+  display: flex;
+}
+
+/* 主要 */
+.main {
+  overflow: auto;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.header, .content, .processes {
+  border-radius: 5px;
+  background-color: var(--white-color);
+}
+
+/* 菜单 */
+.menu {
+  background-color: var(--header-bg-color);
+}
+
+/* 页眉 */
+.header {
+  margin: 10px;
+  display: flex
+}
+
+.header a {
+  float: left;
+  padding: 10px 30px;
+  border-radius: 5px;
+  margin-right: 2px;
+}
+
+/* 布局 */
+.layout {
+  display: flex;
+  flex: 1;
+}
+
+/* 面板 */
+.panel {
+  flex: 0.65;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 地图 */
+.map {
+  flex: 0.7;
+  display: flex;
+}
+
+/* 信息 */
+.message {
+  flex: 0.35;
+  display: flex;
+  overflow: auto;
+  margin-right: 10px;
+  flex-direction: column;
+}
+
+/* 排列 */
+.arrange {
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 数据 */
+.appose {
+  display: flex;
+  margin: 0 10px;
+  align-items: center;
+}
+
+/* 合并 */
+.merge {
+  flex: 0.3;
+  display: flex;
+}
+
+/* 内容 */
+.content {
+  width: inherit;
+  margin: 0 0 10px 10px;
+  overflow: auto;
+  padding: 10px;
+  flex: 1;
+}
+
+/* 页尾 */
+.footer {
+  background-color: var(--white-color);
+  text-align: center;
+  padding: 10px;
+  font-size: xx-small;
+  margin-top: auto;
+}
+
+/* 进程 */
+.processes {
+  width: inherit;
+  margin: 0 0 10px 10px;
+  overflow: auto;
+  padding: 10px;
+  flex: 1;
+}
+
+#info table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#info th, #info td {
+  border: 1px solid var(--tr-color);
+  padding: 8px;
+  text-align: center;
+}
+
+#info th {
+  color: var(--text-color-dark);
+  background-color: #f2f2f2;
+}
+
+#info td {
+  color: var(--text-color-light);
+}
+
+#info tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+#info tr:hover {
+  background-color: var(--tr-color);
+}
+
+/* EChart */
+#flow, #resource, #world {
+  width: 100%;
+  height: 100%;
+}
+
+/* 图片滤镜 */
+.menu td:hover img {
+  filter: invert(50%) sepia(100%) saturate(500%) hue-rotate(180deg);
+  transition: filter 0.3s ease;
+}
+
+/* 页眉加粗 */
+.header a:hover {
+  font-weight: bold;
+  transition: font-weight 0.3s ease;
+}
+
+/* 悬停样式 */
+.menu td a:hover, .header a:hover {
+  cursor: pointer;
+  color: var(--link-color);
+  transition: color 0.3s ease;
+}
+
+/* 菜单选中 */
+.selected {
+  cursor: pointer;
+  color: var(--link-color);
+  outline: 2px solid var(--select-color);
+  transition: color 0.3s ease;
+}
+
+a.selected img {
+  filter: invert(50%) sepia(100%) saturate(500%) hue-rotate(180deg);
+  transition: filter 0.3s ease;
+}
+
+/* 页眉切换 */
+.select {
+  cursor: pointer;
+  font-weight: bold;
+  color: var(--link-color);
+  outline: 2px solid var(--select-color);
+  transition: font-weight 0.3s ease, color 0.3s ease;
+}
+
+@media screen and (height <= 930px) {
+  /* 进程 */
+  .processes {
+    max-height: 210px;
+  }
+}
+
+@media screen and (width >= 1200px) {
+  /* 主要 */
+  .main {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  
+  /* 表格 */
+  .menu table {
+    border-spacing: 0 7px;
+  }
+
+  /* 菜单 */
+  .menu {
+    padding: 0 5px;
+    width: 200px;
+  }
+  
+  /* 布局 */
+  .layout {
+    max-height: 900px;
+  }
+  
+  /* 合并 */
+  .merge {
+    max-height: 270px;
+  }
+}
+
+@media screen and (width <= 1200px) {
+  /* 主要 */
+  .main {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  
+  /* 表格 */
+  .menu table {
+    border-spacing: 0 5px;
+  }
+
+  /* 菜单 */
+  .menu {
+    padding: 0 7px;
+    width: 75px;
+  }
+
+  .menu span {
+    display: none;
+  }
+
+  /* 布局 */
+  .layout {
+    flex-direction: column;
+  }
+
+  /* 面板 */
+  .panel {
+    margin-right: 10px;
+  }
+
+  /* 合并 */
+  .merge {
+    min-height: 200px;
+  }
+  
+  /* 地图 */
+  .map {
+    min-height: 300px;
+  }
+
+  /* 标题 */
+  .menu th {
+    background: var(--header-bg-color);
+  }
+}
+
+@media screen and (width <= 600px) {
+  /* 主要 */
+  .main {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* 布局 */
+  .layout {
+    flex-direction: column;
+  }
+
+  /* 面板 */
+  .panel {
+    margin-right: 10px;
+  }
+
+  /* 合并 */
+  .merge {
+    flex-direction: column;
+    min-height: 600px; /* 设置最小高度 */
+  }
+
+  /* 地图 */
+  .map {
+    min-height: 270px; /* 设置最小高度 */
+  }
+
+  /* 标题 */
+  .menu th {
+    background: var(--header-bg-color);
+  }
+}

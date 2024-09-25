@@ -1,3 +1,9 @@
+:root {
+  --border-color: #cccccc;
+  --link-color: dodgerblue;
+  --white-color: white;
+}
+
 /* 表单 */
 form {
   padding-top: 17vh;
@@ -17,19 +23,19 @@ a {
   width: auto;
   align-self: end;
   padding: 8px 12px;
-  border: 1px solid #ccc; /* 添加边框 */
+  border: 1px solid var(--border-color); /* 添加边框 */
   border-radius: 4px; /* 圆角 */
   box-sizing: border-box; /* 包含内边距和边框 */
-  border-color: dodgerblue;
-  background-color: white;
-  color: dodgerblue;
+  border-color: var(--link-color);
+  background-color: var(--white-color);
+  color: var(--link-color);
 }
 
 /* 输入 */
 input {
   width: inherit;
   padding: 8px 12px;
-  border: 1px solid #ccc; /* 添加边框 */
+  border: 1px solid var(--border-color); /* 添加边框 */
   border-radius: 4px; /* 圆角 */
   box-sizing: border-box; /* 包含内边距和边框 */
   margin-bottom: 10px;
@@ -40,12 +46,12 @@ input[type='submit'] {
   width: auto;
   align-self: end;
   padding: 8px 12px;
-  border: 1px solid #ccc; /* 添加边框 */
+  border: 1px solid var(--border-color); /* 添加边框 */
   border-radius: 4px; /* 圆角 */
   box-sizing: border-box; /* 包含内边距和边框 */
-  border-color: dodgerblue;
-  background-color: white;
-  color: dodgerblue;
+  border-color: var(--link-color);
+  background-color: var(--white-color);
+  color: var(--link-color);
 }
 
 input[type='submit']:hover {
@@ -54,7 +60,7 @@ input[type='submit']:hover {
 
 /* 输入框聚焦样式 */
 input:focus-visible, input[type='submit']:active, a:active {
-  outline: thin solid dodgerblue;
+  outline: thin solid var(--link-color);
 }
 
 /* 容器 */
