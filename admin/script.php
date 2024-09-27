@@ -17,20 +17,16 @@ check();
 
 try {
     // 设置超时时间（例如3秒）
-    $timeout = 3;
-    $command = escapeshellcmd('timeout ' . $timeout . ' vnstat -l --json');  // 过滤命令
-    $output = shell_exec($command);
-
+    $output = shell_exec(escapeshellcmd('timeout 3 vnstat -l --json'));
     // 匹配 rx 中的 ratestring
     $pattern_rx = '/"rx":\{"ratestring":"([0-9.]+) kbit\/s"/';
     preg_match_all($pattern_rx, $output, $matches_rx);
-
     // 匹配 tx 中的 ratestring
     $pattern_tx = '/"tx":\{"ratestring":"([0-9.]+) kbit\/s"/';
     preg_match_all($pattern_tx, $output, $matches_tx);
 
     // ram
-    $memory_info = shell_exec('free -m');
+    $memory_info = shell_exec(escapeshellcmd('free -m'));
     $pattern_ram = '/Mem:\s+(\d+)\s+(\d+)/';
     preg_match($pattern_ram, $memory_info, $matches_ram);
     $ram_total = intval($matches_ram[1]);
@@ -45,7 +41,7 @@ try {
     $cpu = round(100 - floatval($matches_cpu[1]), 2);
 
     // 运行时间
-    $system_run_time = shell_exec('uptime -p');
+    $system_run_time = shell_exec(escapeshellcmd('uptime -p'));
 
     // 进程
     $processes_info = shell_exec('ps -eo pid,cmd,%cpu,%mem --sort=-%cpu | head -n 10');
