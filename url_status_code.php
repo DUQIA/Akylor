@@ -34,8 +34,7 @@ class StatusCode {
         if ($ip === 'invalid Ip') {
             return 'Unknown';
         }
-        $timeout = 1;
-        $command = 'timeout ' . escapeshellarg($timeout) . ' whois ' . escapeshellarg($ip) . ' | grep -i country';
+        $command = 'timeout 1 whois ' . escapeshellarg($ip) . ' | grep -i country';
         $output = $this->code($command);
 
         if (!empty($output) && isset($output[0])) {

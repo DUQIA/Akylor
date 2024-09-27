@@ -29,7 +29,7 @@ try {
     preg_match($pattern_system, $system_information, $matches_system);
 
     // 开机时间
-    $system_start_time = shell_exec('uptime -s');
+    $system_start_time = date("Y-m-d H:i:s", filemtime("/proc/uptime"));
 
     // 获取更新
     function get_update() {
