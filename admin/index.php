@@ -33,7 +33,7 @@ try {
 
     // 获取更新
     function get_update() {
-        $url = new Statuscode();
+        $url = new StatusCode();
         $versions_data = $url->getUpdate();
         $version_data = json_decode($versions_data[0][0], true);
 

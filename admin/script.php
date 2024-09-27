@@ -42,7 +42,7 @@ try {
     $cpu_info = shell_exec('top -bn1 | grep "Cpu(s)"');
     $pattern_cpu = '/(\d+.\d+)\s+id/';
     preg_match($pattern_cpu, $cpu_info, $matches_cpu);
-    $cpu = round(100 - $matches_cpu[1], 2);
+    $cpu = round(100 - floatval($matches_cpu[1]), 2);
 
     // 运行时间
     $system_run_time = shell_exec('uptime -p');

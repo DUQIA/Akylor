@@ -51,19 +51,6 @@ body {
   background-clip: text;
 }
 
-/* 页眉加粗 */
-.header a:hover {
-  font-weight: bold;
-  transition: font-weight 0.3s ease;
-}
-
-/* 悬停样式 */
-.menu td a:hover, .header a:hover {
-  cursor: pointer;
-  color: var(--link-color);
-  transition: color 0.3s ease;
-}
-
 /* 图标 */
 .menu th img {
   width: 45px;
@@ -108,6 +95,19 @@ a {
   display: flex;
   align-items: flex-end;
   border-radius: 5px;
+}
+
+/* 悬停样式 */
+.menu td a:hover, .header a:hover.custom-style {
+  cursor: pointer;
+  color: var(--link-color);
+  transition: color 0.3s ease;
+}
+
+/* 页眉加粗 */
+.header a:hover.custom-style {
+  font-weight: bold;
+  transition: font-weight 0.3s ease;
 }
 
 /* 容器 */

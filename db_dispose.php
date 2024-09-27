@@ -105,11 +105,11 @@ class Db {
         $data[$row['country']] = $row['count']; // 合并新数组
       }
       $result->free_result();
+      $stmt->close();
       return $data;
     } else {
       throw new Exception('Query failure');
     }
-    $stmt->close();
   }
 
   // IP 访问记录
