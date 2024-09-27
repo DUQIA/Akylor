@@ -63,6 +63,31 @@ body {
   border-radius: 5px;
 }
 
+/* 菜单选中 */
+a.selected img {
+  filter: invert(50%) sepia(100%) saturate(500%) hue-rotate(180deg);
+  transition: filter 0.3s ease;
+}
+
+/* 图标 */
+.menu td a img {
+  padding: 0 10px 0 28px;
+}
+
+/* 链接样式 */
+a {
+  color: black;
+  text-decoration: none;
+}
+
+/* 页眉 */
+.header a {
+  float: left;
+  padding: 10px 30px;
+  border-radius: 5px;
+  margin-right: 2px;
+}
+
 /* 文本 */
 .menu td a {
   padding: 8px 0;
@@ -72,17 +97,18 @@ body {
   border-radius: 5px;
 }
 
-/* 链接样式 */
-a {
-  color: black;
-  text-decoration: none;
+/* 悬停样式 */
+.menu td a:hover, .header a:hover.custom-style {
+  cursor: pointer;
+  color: var(--link-color);
+  transition: color 0.3s ease;
 }
 
-/* 图标 */
-.menu td a img {
-  padding: 0 10px 0 28px;
+/* 页眉加粗 */
+.header a:hover.custom-style {
+  font-weight: bold;
+  transition: font-weight 0.3s ease;
 }
-
 
 /* 容器 */
 .container {
@@ -109,13 +135,6 @@ a {
 }
 
 /* 页眉 */
-.header a {
-  float: left;
-  padding: 10px 30px;
-  border-radius: 5px;
-  margin-right: 2px;
-}
-
 .header {
   margin: 10px;
   display: flex
@@ -230,31 +249,13 @@ a {
   height: 100%;
 }
 
-/* 悬停样式 */
-.menu td a:hover, .header a:hover {
-  cursor: pointer;
-  color: var(--link-color);
-  transition: color 0.3s ease;
-}
-
 /* 图片滤镜 */
 .menu td:hover img {
   filter: invert(50%) sepia(100%) saturate(500%) hue-rotate(180deg);
   transition: filter 0.3s ease;
 }
 
-/* 页眉加粗 */
-.header a:hover {
-  font-weight: bold;
-  transition: font-weight 0.3s ease;
-}
-
 /* 菜单选中 */
-
-a.selected img {
-  filter: invert(50%) sepia(100%) saturate(500%) hue-rotate(180deg);
-  transition: filter 0.3s ease;
-}
 .selected {
   cursor: pointer;
   color: var(--link-color);
@@ -336,7 +337,9 @@ a.selected img {
 
   /* 面板 */
   .panel {
+    overflow: hidden;
     margin-right: 10px;
+    max-height: 900px;
   }
 
   /* 合并 */
