@@ -23,7 +23,8 @@ start_session();
 $step = isset($_POST['step']) ? $_POST['step'] : 1;
 
 // 登录步骤 引用 外部步骤和内部保持一致
-function login_step(&$step) {
+function login_step(int &$step): int
+{
     try {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             switch ($step) {

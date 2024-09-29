@@ -24,7 +24,8 @@ $protocol = (!empty($_SESSION['HTTPS']) && $_SESSION['HTTPS'] !== 'off') ? 'http
 $step = file_exists('config.php') ? 4 : 1;
 
 // 连接数据库
-function  sql_conn() {
+function sql_conn(): mysqli
+{
     $conn = new mysqli($_SESSION['db_host'], $_SESSION['db_user'], $_SESSION['db_pass'], $_SESSION['db_name']);
     if ($conn->connect_errno) {
       throw new Exception('conn:' . $conn->connect_error);
@@ -33,7 +34,8 @@ function  sql_conn() {
 }
 
 // 创建数据库
-function sql_create($conn) {
+function sql_create(mysqli $conn): void
+{
     $sql_users = 'users';
     $sql_ip_log = 'ip_log';
     // 如果表创建，就跳过
@@ -75,7 +77,8 @@ function sql_create($conn) {
 }
 
 // 写入config文件
-function write_config() {
+function write_config(): void
+{
     $config_content = "<?php\n" .
         "define('DB_HOST', '{$_SESSION['db_host']}');\n" .
         "define('DB_USER', '{$_SESSION['db_user']}');\n" .
@@ -88,7 +91,8 @@ function write_config() {
 $step = isset($_POST['step']) ? $_POST['step'] : $step;
 
 // 安装步骤 引用 外部步骤和内部步骤保持一致
-function install_step(&$step) {
+function install_step(int &$step): int
+{
     try {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             switch ($step) {

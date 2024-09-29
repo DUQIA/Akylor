@@ -32,7 +32,8 @@ try {
     $system_start_time = date("Y-m-d H:i:s", filemtime("/proc/uptime"));
 
     // 获取更新
-    function get_update() {
+    function get_update(): string
+    {
         $url = new StatusCode();
         $versions_data = $url->getUpdate();
         $version_data = json_decode($versions_data[0][0], true);

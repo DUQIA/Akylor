@@ -1,11 +1,12 @@
 <?php
 
 class StatusCode {
-    private $update_url = 'https://api.github.com/repos/DUQIA/Akylor/releases';
-    private $current_version = 'v0.0.01';
+    private string $update_url = 'https://api.github.com/repos/DUQIA/Akylor/releases';
+    private string $current_version = 'v0.0.01';
 
     // 获取状态码，并判断
-    public function code($command) {
+    public function code(string $command): array|false
+    {
         // 使用 escapeshellcmd 和 escapeshellarg 进行命令安全处理
         $command = escapeshellcmd($command);
         // 使用 exec 获取输出和返回码
@@ -19,7 +20,8 @@ class StatusCode {
     }
 
     // 获取更新信息
-    public function getUpdate() {
+    public function getUpdate(): array
+    {
         $command = 'curl -s -H "User-Agent: Mozilla/5.0 (compatible; PHP script)" ' . escapeshellarg($this->update_url);
         $output = $this->code($command);
         if (empty($output) || !isset($output[0])) {
@@ -30,7 +32,8 @@ class StatusCode {
     }
 
     // whois 获取IP信息
-    public function getIp($ip) {
+    public function getIp(string $ip): string
+    {
         if ($ip === 'invalid Ip') {
             return 'Unknown';
         }
