@@ -31,9 +31,8 @@ try {
             if ($process) {
                 $output = stream_get_contents($process);
                 pclose($process);
-                return $output;
             }
-            return '';
+            return $output ?: '';
         }
 
         // 带宽
@@ -41,65 +40,60 @@ try {
         {
             $stdout = $this->proc($this->command_bandwidth);
             // 处理输出
-            if (isset($stdout)) {
+            if ($stdout) {
                 // 匹配 rx 中的 ratestring
                 $pattern_rx = '/"rx":\{"ratestring":"([0-9.]+) kbit\/s"/';
                 preg_match_all($pattern_rx, $stdout, $matches_rx);
                 // 匹配 tx 中的 ratestring
                 $pattern_tx = '/"tx":\{"ratestring":"([0-9.]+) kbit\/s"/';
                 preg_match_all($pattern_tx, $stdout, $matches_tx);
-                return array(floatval(current($matches_rx[1])), floatval(current($matches_tx[1])));
             }
-            return array(0, 0);
+            return array(floatval(current($matches_rx[1])), floatval(current($matches_tx[1]))) ?: array(0, 0);
         }
 
         // 内存
         private function ram(): array
         {
             $memory_info = $this->proc($this->command_ram);
-            if (isset($memory_info)) {
+            if ($memory_info) {
                 $pattern_ram = '/Mem:\s+(\d+)\s+(\d+)/';
                 preg_match($pattern_ram, $memory_info, $matches_ram);
                 $ram_total = intval($matches_ram[1]);
                 $ram_used = intval($matches_ram[2]);
                 $ram_usage_percentage = ($ram_used / $ram_total) * 100;
                 $ram = round($ram_usage_percentage, 2);
-                return array($ram);
             }
-            return array(0);
+            return array($ram) ?: array(0);
         }
 
         // cpu
         private function cpu(): array
         {
             $cpu_info = $this->proc($this->command_cpu);
-            if (isset($cpu_info)) {
+            if ($cpu_info) {
                 $pattern_cpu = '/(\d+.\d+)\s+id/';
                 preg_match($pattern_cpu, $cpu_info, $matches_cpu);
                 $cpu = round(100 - floatval($matches_cpu[1]), 2);
-                return array($cpu);
             }
-            return array(0);
+            return array($cpu) ?: array(0);
         }
 
         // 运行时间
         private function runTime(): array
         {
             $run_time_info = $this->proc($this->command_run_time);
-            if (isset($run_time_info)) {
-                return array($run_time_info);
+            if ($run_time_info) {
             }
-            return array(0);
+            return array($run_time_info) ?: array(0);
         }
 
         // 进程
         private function processes(): array
         {
             $processes_info = $this->proc($this->command_processes);
-            if (isset($processes_info)) {
-                return array($processes_info);
+            if ($processes_info) {
             }
-            return array(0);
+            return array($processes_info) ?: array(0);
         }
 
         // ip统计
