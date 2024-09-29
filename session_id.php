@@ -10,7 +10,8 @@ ini_set('display_errors', 0);
 // error_reporting(E_ALL);
 
 try {
-    function start_session() {
+    function start_session(): void
+    {
         session_name('UID');
         ini_set('session.use_strict_mode', 1); // 开启严格模式
 
@@ -22,7 +23,7 @@ try {
             'secure' => (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off'), // 仅通过 HTTPS 传输
             'httponly' => true, // 禁止 JavaScript 访问
             'samesite' => 'Strict', // 防止 CSRF 攻击，使用更严格的策略 Strict Lax
-            'Partitioned' => true, // 指定分区
+            // 'Partitioned' => true, // 指定分区
             ]);
             
         // 检查会话是否已经启动
@@ -38,7 +39,8 @@ try {
     }
 
     // 检查是否已设置 SID cookie 并与当前会话 ID 匹配
-    function check() {
+    function check(): void
+    {
         // 受保护页面不缓存
         header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1.
         header("Pragma: no-cache"); // HTTP 1.0.
@@ -83,7 +85,8 @@ try {
     }
 
     // 页面跳转
-    function redirect() {
+    function redirect(): void
+    {
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https://' : 'http://';
         $host = htmlspecialchars($_SERVER['HTTP_HOST'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
         $url = $protocol . $host . '/login.php'; // 构建完整 URL
@@ -92,7 +95,8 @@ try {
     }
     
     // 销毁 cookie
-    function destroy() {
+    function destroy(): void
+    {
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
         }

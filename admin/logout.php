@@ -9,8 +9,11 @@ if (file_exists($id_file)) {
     die('File does not exist');
 }
 
-// 销毁会话
-destroy();
-
 // 检查会话
-check();
+if (!isset($_COOKIE['UID']) || $_COOKIE['UID'] !== session_id() || $cookie !== session_id()) {
+    check();
+}
+
+// 销毁会话
+// 需要在所有 echo print_r header 之前摧毁 cookie 信息
+destroy();

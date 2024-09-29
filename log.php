@@ -1,6 +1,7 @@
 <?php
 
-function log_error($message, $filename) {
+function log_error(string $message, string $filename): void
+{
     // 验证文件名，确保没有目录遍历攻击
     if (preg_match('/^[a-zA-Z0-9_\-]+$/', $filename) !== 1) {
         throw new InvalidArgumentException('无效的文件名');

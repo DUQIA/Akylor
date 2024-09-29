@@ -13,23 +13,26 @@ if (file_exists($file) && file_exists($id_file) && file_exists($url_file)) {
 }
 
 class Db {
-  private $conn;
+  private mysqli $conn;
 
   // 初始化连接
-  public function __construct() {
+  public function __construct()
+  {
     $this->conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
     $this->connStatus();
   }
 
   // 检查连接
-  public function connStatus() {
+  public function connStatus(): void
+  {
     if ($this->conn->connect_errno) {
       throw new Exception('Connection error: ' . $this->conn->connect_error);
     }
   }
 
   // 登录
-  public function dbLogin($name, $pass) {
+  public function dbLogin(string $name, string $pass): int
+  {
     $stmt = $this->conn->prepare("SELECT user, pass, session_id, is_active FROM users WHERE user = ?");
     if ($stmt) {
       $stmt->bind_param('s', $name);
@@ -73,7 +76,8 @@ class Db {
   }
 
   // cookie 验证
-  public function dbCookie() {
+  public function dbCookie(): string|false
+  {
     if (!isset($_COOKIE['UID'])) {
         check();
     }
@@ -91,11 +95,14 @@ class Db {
     } // else { // 唯一 id 检测
     //   throw new Exception('Cookie verification failed');
     // }
+    // 如果查询结果为空，返回 false
     $stmt->close();
+    return false;
   }
 
   // IP 统计
-  public function dbIpCount() {
+  public function dbIpCount(): array
+  {
     $stmt = $this->conn->prepare("SELECT country, COUNT(*) as count FROM ip_log GROUP BY country");
     if ($stmt) {
       $data = array();
@@ -113,7 +120,8 @@ class Db {
   }
 
   // IP 访问记录
-  public function dbIp() {
+  public function dbIp(): void
+  {
     $ip = (filter_var($_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP)) ?: 'invalid Ip'; // 获取当前ip地址
     $response = new StatusCode();
     $country = $response->getIp($ip);
@@ -146,7 +154,8 @@ class Db {
   }
 
   // 对象销毁时关闭连接
-  public function __destruct() {
+  public function __destruct()
+  {
     // 关闭连接
     if ($this->conn) {
       $this->conn->close();
