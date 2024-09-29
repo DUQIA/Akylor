@@ -88,7 +88,7 @@ $step = login_step($step);
         </body>
     <?php else: ?>
         <?php
-        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https://' : 'http://';
+        $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https://' : 'http://';
         $host = htmlspecialchars($_SERVER['HTTP_HOST'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
         $url = $protocol . $host . '/admin'; // 构建完整 URL
         header('Location: ' . $url);

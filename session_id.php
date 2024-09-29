@@ -20,7 +20,7 @@ try {
             'lifetime' => 0, // 会话在浏览器关闭时失效
             'path' => '/', // 会话 cookie 的路径
             'domain' => htmlspecialchars($_SERVER['HTTP_HOST'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'), // 会话 cookie 的域名
-            'secure' => (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off'), // 仅通过 HTTPS 传输
+            'secure' => (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off'), // 仅通过 HTTPS 传输
             'httponly' => true, // 禁止 JavaScript 访问
             'samesite' => 'Strict', // 防止 CSRF 攻击，使用更严格的策略 Strict Lax
             // 'Partitioned' => true, // 指定分区
@@ -87,7 +87,7 @@ try {
     // 页面跳转
     function redirect(): void
     {
-        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https://' : 'http://';
+        $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https://' : 'http://';
         $host = htmlspecialchars($_SERVER['HTTP_HOST'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
         $url = $protocol . $host . '/login.php'; // 构建完整 URL
         header('Location: ' . $url);
