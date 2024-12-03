@@ -10,6 +10,7 @@ ini_set('display_errors', 0);
 // error_reporting(E_ALL);
 
 try {
+    // 设置 cookie
     function start_session(): void
     {
         session_name('UID');
@@ -64,34 +65,39 @@ try {
         }
 
         if (!$valid_origin) {
-            redirect();
+            redirect('/login');
         }
         
         // 验证 cookie 有效性
         if (isset($_COOKIE['UID'])) {
             $db = __DIR__ . '/db_dispose.php';
-            if (file_exists($db)) {
-                include_once $db;
-            } else {
-                die('File does not exist');
-            }
+            (file_exists($db)) ? include_once $db : die('File does not exist');
             // Cookie查询
             $db_class = new Db();
             $cookie = $db_class->dbCookie();
         }
         if (!isset($_COOKIE['UID']) || $_COOKIE['UID'] !== session_id() || $cookie !== session_id()) {
-            redirect();
+            redirect('/login');
         }
     }
 
     // 页面跳转
-    function redirect(): void
+    function redirect($flie): void
     {
         $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https://' : 'http://';
         $host = htmlspecialchars($_SERVER['HTTP_HOST'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
-        $url = $protocol . $host . '/login.php'; // 构建完整 URL
+        $url = $protocol . $host . $flie; // 构建完整 URL
         header('Location: ' . $url);
         exit(); // 确保在重定向后停止脚本执行
+    }
+
+    // 等待跳转
+    function wait($dir): string
+    {
+        $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https://' : 'http://';
+        $host = htmlspecialchars($_SERVER['HTTP_HOST'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+        $url = $protocol . $host . $dir; // 构建完整 URL
+        return $url;
     }
     
     // 销毁 cookie

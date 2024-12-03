@@ -102,10 +102,10 @@ try {
             $file = __DIR__ . '/language.php';
             $db = dirname(__DIR__) . '/db_dispose.php';
             if (file_exists($db)) {
-            include $file;
-            include_once $db;
+                include $file;
+                include_once $db;
             } else {
-            die('File does not exist');
+                die('File does not exist');
             }
             $language = LANGUAGE;
             // IP记录
@@ -147,8 +147,9 @@ try {
     // 合并结果
 
     header('Content-Type: application/json');
-    echo json_encode($results, JSON_UNESCAPED_UNICODE);
+    // 转换为 JSON 处理特殊字符
+    echo json_encode($results, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
 
 } catch (Exception $e) {
-    log_error($e->getMessage(), 'script');
+    log_error($e->getMessage(), 'admin-script');
 }

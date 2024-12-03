@@ -24,11 +24,16 @@ a {
   align-self: end;
   padding: 8px 12px;
   border: 1px solid var(--border-color); /* 添加边框 */
-  border-radius: 4px; /* 圆角 */
+  border-radius: 5px; /* 圆角 */
   box-sizing: border-box; /* 包含内边距和边框 */
   border-color: var(--link-color);
   background-color: var(--white-color);
   color: var(--link-color);
+}
+
+/* 移除默认样式 */
+button {
+  outline: none;
 }
 
 /* 输入 */
@@ -36,7 +41,7 @@ input {
   width: inherit;
   padding: 8px 12px;
   border: 1px solid var(--border-color); /* 添加边框 */
-  border-radius: 4px; /* 圆角 */
+  border-radius: 5px; /* 圆角 */
   box-sizing: border-box; /* 包含内边距和边框 */
   margin-bottom: 10px;
 }
@@ -47,7 +52,7 @@ input[type='submit'] {
   align-self: end;
   padding: 8px 12px;
   border: 1px solid var(--border-color); /* 添加边框 */
-  border-radius: 4px; /* 圆角 */
+  border-radius: 5px; /* 圆角 */
   box-sizing: border-box; /* 包含内边距和边框 */
   border-color: var(--link-color);
   background-color: var(--white-color);

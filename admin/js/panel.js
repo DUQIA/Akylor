@@ -225,12 +225,12 @@ window.onload = function() {
         'Zimbabwe' : '津巴布韦'
       }
     },
-    "en-US": {
-      flow: 'flow',
-      download: 'download',
-      upload: 'upload',
-      resource: 'resource',
-      flowMap: 'flow map',
+    "en": {
+      flow: 'Flow',
+      download: 'Download',
+      upload: 'Upload',
+      resource: 'Resource',
+      flowMap: 'Flow map',
       countrys: {
         'Somalia' : 'Somalia',
         'Liechtenstein' : 'Liechtenstein',
@@ -464,7 +464,7 @@ window.onload = function() {
     myChart1.resize();
   }, { passive: true });
   let option1;
-  
+
   option1 = {
     title: {
       text: lang[currentLang].flow,
@@ -555,7 +555,7 @@ window.onload = function() {
     },
     legend: {
       icon: 'circle',
-      data: ['cpu', 'ram'],
+      data: ['Cpu', 'Ram'],
       emphasis: false,
       top: 10
     },
@@ -573,7 +573,7 @@ window.onload = function() {
     },
     series: [
       {
-        name: 'cpu',
+        name: 'Cpu',
         data: [],
         type: 'line',
         color: 'red',
@@ -590,7 +590,7 @@ window.onload = function() {
         }
       },
       {
-        name: 'ram',
+        name: 'Ram',
         data: [],
         type: 'line',
         color: 'yellow',
@@ -796,7 +796,8 @@ window.onload = function() {
     })
     .catch(error => {
       console.error('An error occurred while obtaining data:', error);
-          });
+      (error.message === 'TypeError: Failed to fetch') ? null : window.location.href = '/login';
+    });
   }
   setInterval(fetchData, 3000);
 }

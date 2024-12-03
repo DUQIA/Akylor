@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // 获取图标路径的函数
 function getIconPath(type) {
-  const basePath = './svg/';
+  const basePath = '../svg/';
   if (type === 'close') {
       return basePath + 'preview-close-one.svg';
   } else if (type === 'open') {

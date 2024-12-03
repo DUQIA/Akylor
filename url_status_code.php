@@ -2,7 +2,7 @@
 
 class StatusCode {
     private string $update_url = 'https://api.github.com/repos/DUQIA/Akylor/releases';
-    private string $current_version = 'v0.0.01';
+    private string $current_version = 'v0.0.02';
 
     // 获取状态码，并判断
     private function code(string $command): array|false
@@ -16,12 +16,24 @@ class StatusCode {
     }
 
     // 获取更新信息
-    public function getUpdate(): array
+    public function getUpdate(): string
     {
         $command = 'curl -s -H "User-Agent: Mozilla/5.0 (compatible; PHP script)" ' . escapeshellarg($this->update_url);
         $output = $this->code($command);
 
-        return ($output === false || !isset($output[0])) ? array($this->current_version, $this->current_version) : array($output, $this->current_version);
+        $versions_data = ($output === false || !isset($output[0])) ? array($this->current_version, $this->current_version) : array($output, $this->current_version);
+        
+        $version_data = json_decode($versions_data[0][0], true);
+
+        // 获取更新
+        if (empty($version_data[0]['name'])) {
+            return $versions_data[1] .'<a href="https://github.com/DUQIA/Akylor/releases" alt="update" target="_blank" style="cursor: pointer; color: red;"><strong>获取失败</strong></a>';
+        } elseif ($version_data[0]['name'] !== $versions_data[1]) {
+            $htmlUrl = htmlspecialchars($version_data[0]['html_url'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+            return $versions_data[1] .'<a href="' . $htmlUrl . '" alt="update" target="_blank" style="cursor: pointer; color: blue;"><strong>获取更新</strong></a>';
+        } else {
+            return $versions_data[1];
+        }
     }
 
     // whois 获取IP信息

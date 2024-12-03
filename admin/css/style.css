@@ -3,10 +3,18 @@
   --header-bg-color: #d3d9e3;
   --text-color-dark: #464646;
   --text-color-light: #636363;
+  --text-color-message: #262525;
   --link-color: dodgerblue;
   --white-color: white;
   --tr-color: #ddd;
+  --blank-color: #fff;
+  --border-color: #ccc;
   --select-color: #1e90ff;
+  --background-color: #f9f9f9;
+  --black-color: black;
+  --screen-width: 100%;
+  --screen-height: 100%;
+  --select-status: invert(50%) sepia(100%) saturate(500%) hue-rotate(180deg);
 }
 
 body {
@@ -14,20 +22,8 @@ body {
   background-color: var(--main-bg-color);
 }
 
-/* 进度条 */
-.loading {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 0;
-  height: 4px;
-  background-color: var(--link-color);
-  z-index: 9999;
-  transition: width 0.4s ease;
-}
-
 /* 系统信息 */
-.appose h3 {
+.content h3 {
   margin: 5px 10px;
   font-size: 18px;
   color: var(--text-color-dark);
@@ -37,7 +33,7 @@ body {
 .appose b {
   padding: 0 10px;
   font-size: 15px;
-  color: #262525;
+  color: var(--text-color-message);
 }
 
 /* 消息数据 */
@@ -59,8 +55,8 @@ body {
   font-size: xx-large;
   align-items: stretch;
   -webkit-text-fill-color: transparent;
-  background: linear-gradient(94.75deg, rgb(250 189 137) 0%, rgb(242 119 110) 43.66%, rgb(168 20 113) 64.23%, rgb(29 17 121) 83.76%, rgb(8 170 236) 100%);
-  background-clip: text;
+  background: linear-gradient(94.75deg, rgb(250 189 137) 40%, rgb(242 119 110) 44.66%, rgb(168 20 113) 64.23%, rgb(29 17 121) 80.76%, rgb(8 170 236) 90%) text;
+  mix-blend-mode: normal;
 }
 
 /* 图标 */
@@ -77,7 +73,7 @@ body {
 
 /* 菜单选中 */
 a.selected img {
-  filter: invert(50%) sepia(100%) saturate(500%) hue-rotate(180deg);
+  filter: var(--select-status);
   transition: filter 0.3s ease;
 }
 
@@ -88,25 +84,24 @@ a.selected img {
 
 /* 链接样式 */
 a {
-  color: black;
+  color: var(--black-color);
   text-decoration: none;
 }
 
 /* 页眉 */
 .header button {
-  float: left;
   border: none;
-  font-size: medium;
+  font: inherit;
   padding: 10px 30px;
   border-radius: 5px;
-  margin-right: 2px;
-  background-color: #fff;
+  margin: 2px;
+  background-color: var(--blank-color);
 }
 
 /* 文本 */
 .menu td a {
   padding: 8px 0;
-  width: 100%;
+  width: var(--screen-width);
   display: flex;
   align-items: flex-end;
   border-radius: 5px;
@@ -149,17 +144,23 @@ a {
   background-color: var(--header-bg-color);
 }
 
+/* 标题 */
+.header .header-title {
+  display: flex;
+  align-items: center;
+}
+
 /* 页眉 */
 .header {
   margin: 10px;
-  display: flex;
+  overflow: auto;
+  white-space: nowrap; /* 不换行 */
 }
 
 /* 布局 */
 .layout {
   display: flex;
   flex: 1;
-  overflow: hidden;
   flex-direction: column;
 }
 
@@ -246,7 +247,7 @@ a {
 }
 
 #info table {
-  width: 100%;
+  width: var(--screen-width);
   border-collapse: collapse;
 }
 
@@ -266,7 +267,7 @@ a {
 }
 
 #info tr:nth-child(even) {
-  background-color: #f9f9f9;
+  background-color: var(--background-color);
 }
 
 #info tr:hover {
@@ -275,13 +276,13 @@ a {
 
 /* EChart */
 #flow, #resource, #world {
-  width: 100%;
-  height: 100%;
+  width: var(--screen-width);
+  height: var(--screen-height);
 }
 
 /* 图片滤镜 */
 .menu td:hover img {
-  filter: invert(50%) sepia(100%) saturate(500%) hue-rotate(180deg);
+  filter: var(--select-status);
   transition: filter 0.3s ease;
 }
 
@@ -317,7 +318,7 @@ a {
 @media screen and (width >= 1200px) {
   /* 主要 */
   .main {
-    max-width: 100%;
+    max-width: var(--screen-width);
     box-sizing: border-box;
   }
   
@@ -331,12 +332,12 @@ a {
     padding: 0 5px;
     width: 200px;
   }
-  
-  /* 布局 */
-  .layout, .item {
-    max-height: 900px;
+
+  /* 面板 */
+  .panel {
+    max-width: 65%;
   }
-  
+
   /* 合并 */
   .merge {
     max-height: 270px;
@@ -346,7 +347,7 @@ a {
 @media screen and (width <= 1200px) {
   /* 主要 */
   .main {
-    max-width: 100%;
+    max-width: var(--screen-width);
     box-sizing: border-box;
   }
   
@@ -374,7 +375,6 @@ a {
   .panel {
     overflow: hidden;
     margin-right: 10px;
-    max-height: 900px;
   }
 
   /* 合并 */
@@ -396,7 +396,7 @@ a {
 @media screen and (width <= 600px) {
   /* 主要 */
   .main {
-    max-width: 100%;
+    max-width: var(--screen-width);
     box-sizing: border-box;
   }
 

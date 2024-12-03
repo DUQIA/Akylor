@@ -1,0 +1,217 @@
+/* 页面 */
+.page {
+  display: flex;
+  flex: 1;
+  margin-right: 10px;
+}
+
+/* 表单 */
+.page form {
+display: flex;
+flex-direction: column;
+}
+
+/* 表单标题 */
+.page label, .page .home-label {
+min-width: 50px;
+padding: 10px;
+font-weight: 600;
+color: var(--text-color-message);
+}
+
+/* 输入框样式 */
+.page input[type='text'], input[type='submit'], .page textarea {
+margin: 10px;
+width: var(--screen-width);
+padding: 8px 12px;
+border: 1px solid var(--border-color); /* 添加边框 */
+border-radius: 4px; /* 圆角 */
+box-sizing: border-box; /* 包含内边距和边框 */
+margin-bottom: 10px;
+outline: none; /* 移除默认样式 */
+}
+
+.page textarea {
+  height: 300px;
+}
+
+/* 输入框聚焦样式 */
+.page input:focus-visible, select:focus, textarea:focus {
+background-color: #f0f8ff; /* 设置聚焦时的背景颜色 */
+outline: thin solid var(--select-color); /* 移除默认的聚焦边框 */
+}
+
+/* 按钮 */
+input[type='submit'] {
+width: auto;
+align-self: center;
+background-color: var(--white-color);
+color: var(--link-color);
+}
+
+input[type='submit']:hover, input[type='submit']:focus {
+cursor: pointer;
+color: var(--white-color);
+background-color: var(--link-color);
+}
+
+/* 输入框聚焦样式 */
+input[type='submit']:active, a:active, a:focus, textarea:focus {
+outline: thin solid var(--link-color);
+}
+
+/* 单选 */
+input[type='checkbox'] {
+  appearance: none; /* 移除默认样式 */
+  height: 20px;
+  width: 20px;
+  border-radius: 5px;
+  accent-color: var(--border-color); /* 设置复选框的颜色 */
+  background-color: var(--blank-color); /* 背景颜色 */
+  border: thin solid var(--border-color); /* 边框颜色 */
+  cursor: pointer;
+}
+
+/* 选中状态的样式 */
+input[type="checkbox" i]:checked {
+  background-color: var(--link-color); /* 选中时的背景颜色 */
+  border: thin solid var(--link-color); /* 选中时的边框颜色 */
+  position: relative;
+}
+
+/* ✅选中状态的对勾样式 */
+input[type="checkbox" i]:checked::after {
+content: '';
+position: absolute;
+top: 0px;
+left: 5px;
+width: 4px;
+height: 12px;
+border: thin solid var(--white-color);
+border-width: 0 3px 3px 0;
+transform: rotate(45deg);
+}
+
+/* -------------------------- 下拉框 -------------------------- */
+
+/* 选项框 */
+.custom-select {
+  position: relative;
+  display: inline-block;
+  width: var(--screen-width);
+  margin: 10px;
+}
+
+/* 默认值和图标 */
+.select-selected {
+  font-size: 14px;
+  border-radius: 5px;
+  padding: 6px 10px;
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* 默认内容 */
+.select-content {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+
+/* 下拉内容 */
+.select-items {
+  border-radius: 5px;
+  position: absolute;
+  background-color: var(--background-color);
+  border: 1px solid var(--border-color);
+  width: var(--screen-width);
+  z-index: 99;
+  display: none;
+  box-shadow: 0px 4px 4px 0px rgb(126 126 126 / 12%);
+}
+
+/* 下拉列表 */
+.select-items .items-list {
+  padding: 3px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 选项 */
+.select-items .data {
+  font-size: 11px;
+  margin: 1.5px;
+  padding: 9px 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* 选中项 */
+.value {
+  color: var(--black-color);
+  background-color: #d0d0d0; /* 选中项的背景颜色 */
+}
+
+/* 悬停项 */
+.select-color {
+  color: var(--white-color);
+  background-color: var(--link-color);
+}
+
+/* -------------------------- 标签框 -------------------------- */
+
+/* 容器 */
+.home-container {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  width: var(--screen-width);
+}
+
+/* 卡片 */
+.card {
+  font-size: 11px;
+  padding: 7px 10px;
+  margin: 5px;
+  border-radius: 5px;
+  background-color: #f0f0f0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+/* 输入框 */
+.card-text {
+  display: none;
+}
+
+/* 选中项 */
+.reveal {
+  display: flex;
+}
+
+/* 显示文本 */
+.card-text span {
+  display: flex;
+  word-break: break-all;
+}
+
+/* 删除选项 */
+.card-remove {
+  display: none;
+}
+
+/* 图标悬停 */
+.card img:hover {
+  cursor: pointer;
+  filter: grayscale(100%) brightness(50%);
+}
+
+/* -------------------------------------------------------- */
