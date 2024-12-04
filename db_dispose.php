@@ -322,10 +322,10 @@ class Db {
             }
         // 提交事务
         $this->commit();
-        } catch (Exception $i) {
+        } catch (Exception $home_config_query) {
             // 回滚事务
             $this->rollBack();
-            throw $i;
+            throw new Exception('home_config query failure: ' . $home_config_query->getMessage());
         }
         return $data;
     }
@@ -429,10 +429,10 @@ class Db {
             }
             // 提交事务
             $this->commit();
-        } catch (Exception $e) {
+        } catch (Exception $home_labels_query) {
             // 回滚事务
             $this->rollBack();
-            throw $e;
+            throw new Exception('home_labels query failure: ' . $home_labels_query->getMessage());
         }
         return $data;
     }
