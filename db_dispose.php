@@ -416,7 +416,6 @@ class Db {
                 if (!is_array($label_id) || array_diff($label_id, $existing_ids)) {
                     // 回滚事务
                     $this->rollBack();
-                    echo "<script>alert('ID does not exist');</script>";
                     return $data;
                 }
                 
