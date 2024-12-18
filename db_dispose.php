@@ -271,10 +271,23 @@ class Db {
     // home_config 配置更新
     public function dbUpdateHomeConfig(string $site_name, string $site_icon, string $home_theme, string $home_icon, array $label_id, array $home_label, bool $home_search, bool $home_login, string $home_content): void
     {
-        $label_id_string = implode(", ",$label_id);
-        $home_label_string = implode(", ",$home_label);
-        $command = "UPDATE {$this->home_config} SET site_name = ? , site_icon = ? , home_theme = ? , home_icon = ? , label_id = ? , home_label = ? , home_search = ? , home_login = ? , home_content = ? ";
-        $this->dbUpdate($command, 'ssssssiis', [$site_name, $site_icon, $home_theme, $home_icon, $label_id_string, $home_label_string, $home_search, $home_login, $home_content], 'Update home_config failed');
+        try {
+            // 验证 ID 有效性
+            $data = $this->dbQueryHomeLabelAll();
+            $existing_ids = array_column($data, 'id');
+            if (!is_array($label_id) || array_diff(array_filter($label_id), $existing_ids)) {
+                echo "<script>alert('Label ID is invalid');</script>";
+                throw new Exception('ID does not exist');
+            }
+
+            $label_id_string = implode(", ",$label_id);
+            $home_label_string = implode(", ",$home_label);
+
+            $command = "UPDATE {$this->home_config} SET site_name = ? , site_icon = ? , home_theme = ? , home_icon = ? , label_id = ? , home_label = ? , home_search = ? , home_login = ? , home_content = ? ";
+            $this->dbUpdate($command, 'ssssssiis', [$site_name, $site_icon, $home_theme, $home_icon, $label_id_string, $home_label_string, $home_search, $home_login, $home_content], 'Update home_config failed');
+        } catch (Exception $e) {
+            throw new Exception('home_config update failed: ' . $e->getMessage());
+        }
     }
 
     // home_config 配置查询
@@ -312,7 +325,7 @@ class Db {
 &amp;lt;/a&amp;gt;
 &amp;lt;/span&amp;gt;'],
                     ['Dropdown', 'dropdown', '&amp;lt;a href=&amp;#039;https://github.com/DUQIA/Akylor&amp;#039; target=&amp;#039;_blank&amp;#039; rel=&amp;#039;nofollow noopener noreferrer&amp;#039;&amp;gt;Akylor&amp;lt;/a&amp;gt;'],
-                    ['Link', 'link', '&amp;lt;a href=&amp;#039;https://github.com/DUQIA&amp;#039; target=&amp;#039;_blank&amp;#039; rel=&amp;#039;nofollow noopener noreferrer&amp;#039;&amp;gt;Github&amp;lt;/a&amp;gt;']
+                    ['Link', 'link', '&amp;lt;a href=&amp;#039;https://blog.akylor.us.kg&amp;#039; target=&amp;#039;_blank&amp;#039; rel=&amp;#039;nofollow noopener noreferrer&amp;#039;&amp;gt;Blog&amp;lt;/a&amp;gt;']
                 ];
                 $this->dbDeleteHomeLabelAll();
                 foreach ($default_labels_config as $label) {
@@ -389,9 +402,9 @@ class Db {
             // 开始事务
             $this->beginTransaction();
 
-            $command = "SELECT * FROM {$this->home_labels}";
-            $data = $this->dbQueryAllLine($command, 'Query home_labels failed');
+            $data = $this->dbQueryHomeLabelAll();
 
+            // 首次创建数据
             if (empty($data)) {
                 $this->dbCreateHomeLabel($home_label);
                 return $this->dbQueryHomeLabel($label_id, $home_label);
@@ -399,6 +412,14 @@ class Db {
                 $existing_ids = array_column($data, 'id');
                 $existing_labels = array_column($data, 'label_name');
 
+                // 验证 ID 有效性
+                if (!is_array($label_id) || array_diff($label_id, $existing_ids)) {
+                    // 回滚事务
+                    $this->rollBack();
+                    echo "<script>alert('ID does not exist');</script>";
+                    return $data;
+                }
+                
                 $delete_ids = array_diff($existing_ids, $label_id); // 删除id
                 $Remaining_labels = array_diff_assoc($home_label, $existing_labels); // 剩余标签
                 $update_ids = array_intersect_key($label_id, $Remaining_labels); // 通过 id 更新标签
@@ -417,8 +438,7 @@ class Db {
 
                 if (!empty($delete_ids) || !empty($update_ids) && !empty($update_laebels) || $create_labels) {
                     // 重新查询最新的 home_labels 数据
-                    $command = "SELECT * FROM {$this->home_labels}";
-                    $update_data = $this->dbQueryAllLine($command, 'Query home_labels failed');
+                    $update_data = $this->dbQueryHomeLabelAll();
                     $update_ids = array_column($update_data, 'id');
                     // 更新 home_config 的id
                     $update_label_id = "UPDATE {$this->home_config} SET label_id = ?";
