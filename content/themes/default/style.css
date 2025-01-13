@@ -5,7 +5,7 @@
     --card-radius: 5px;
     --sidebar-radius: 15px;
     --navigation-padding: 14px 16px;
-    --card-shadow: 0px 0px 3px rgba(0, 0, 0, 8.4%), 0px 2px 3px rgba(0, 0, 0, 16.8%);
+    --card-shadow: 0 0 3px rgb(0 0 0 / 8.4%), 0 2px 3px rgb(0 0 0 / 16.8%);
     --color-font-white: white;
     --color-font-black: black;
     --color-sidebar-hover: #f8f9fa;
@@ -62,7 +62,8 @@ body {
 .navigation {
     display: flex; /* 1.2 弹性容器 */
     padding: 16px; /* 1.1 内边距 */
-     /* 内容会被修剪，并且其余内容是不可见的。 */
+
+    /* 内容会被修剪，并且其余内容是不可见的。 */
     text-align: center;
     position: fixed; /* 1.1 固定位置 */
     top: 0; /* 1.1 顶部 */
@@ -118,9 +119,11 @@ body {
 .navigation #checkbox:checked + .toggle .bar1 {
     transform: translateY(6px) rotate(45deg);
 }
+
 .navigation #checkbox:checked + .toggle .bar2 {
     transform: scale(0);
 }
+
 .navigation #checkbox:checked + .toggle .bar3 {
     transform: translateY(-6px) rotate(-45deg);
 }

@@ -21,6 +21,8 @@ define('TRANSLATIONS', (LANGUAGE === 'zh') ? array(
   'home' => '主页',
   'login' => '登录',
   'Successfully' => '已成功安装!',
+  'page_not_found' => '页面未找到',
+  'back_to_home'=> '返回 主页',
 ) : array(
   'title' => 'Akylor-install',
   'title_login' => 'Akylor-login',
@@ -36,4 +38,6 @@ define('TRANSLATIONS', (LANGUAGE === 'zh') ? array(
   'home' => 'Home',
   'login' => 'Login',
   'Successfully' => 'Successfully installed!',
+  'page_not_found' => 'Page Not Found',
+  'back_to_home'=> 'Back to Home',
 ));
