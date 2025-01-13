@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
             setTimeout(() => {
                 const star = document.createElement('img');
                 star.src = '/content/themes/default/svg/star.svg';
+                star.alt = 'star';
                 star.className = 'star';
                 star.loading = 'lazy';
 

@@ -109,7 +109,7 @@ try {
                 <div class='bar3 bars'></div>
             </label>
             <!-- 导航栏图标 -->
-            <a class='logo' href='<?php echo wait(''); ?>'><img src='<?php echo htmlspecialchars($home_configs['home_icon'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); ?>'></a>
+            <a class='logo' href='<?php echo wait(''); ?>'><img src='<?php echo htmlspecialchars($home_configs['home_icon'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); ?>' alt='logo'></a>
             <!-- 标签 -->
             <span class='labels'><?php label_style($home_lable); ?></span>
             <!-- 搜索 登录 -->
