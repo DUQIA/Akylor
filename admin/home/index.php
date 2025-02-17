@@ -81,7 +81,7 @@ try {
             }
 
             // 更新会话
-            // redirect('/admin/home');
+            redirect('/admin/home');
         }
     }
     home_option();

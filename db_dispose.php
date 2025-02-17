@@ -272,10 +272,20 @@ class Db {
     public function dbUpdateHomeConfig(string $site_name, string $site_icon, string $home_theme, string $home_icon, array $label_id, array $home_label, bool $home_search, bool $home_login, string $home_content): void
     {
         try {
+            $filter = array_filter($label_id);
+            // 验证 ID 重复性
+            $count = array_count_values($filter);
+            foreach ($count as $number => $frequency) {
+                if($frequency > 1) {
+                    echo "<script>alert('Label ID is repeat');</script>";
+                    throw new Exception('ID is repeat');
+                }
+            }
+            
             // 验证 ID 有效性
             $data = $this->dbQueryHomeLabelAll();
             $existing_ids = array_column($data, 'id');
-            if (!is_array($label_id) || array_diff(array_filter($label_id), $existing_ids)) {
+            if (!is_array($label_id) || array_diff($filter, $existing_ids)) {
                 echo "<script>alert('Label ID is invalid');</script>";
                 throw new Exception('ID does not exist');
             }
@@ -411,6 +421,17 @@ class Db {
             } else {
                 $existing_ids = array_column($data, 'id');
                 $existing_labels = array_column($data, 'label_name');
+
+                $filter = array_filter($label_id);
+                // 验证 ID 重复性
+                $count = array_count_values($filter);
+                foreach ($count as $number => $frequency) {
+                    if($frequency > 1) {
+                        // 回滚事务
+                        $this->rollBack();
+                        return $data;
+                    }
+                }
 
                 // 验证 ID 有效性
                 if (!is_array($label_id) || array_diff($label_id, $existing_ids)) {
