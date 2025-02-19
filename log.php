@@ -21,6 +21,10 @@ function log_error(string $message, string $filename): void
         chmod($logFile, 0644); // 设置文件权限为 0644
     }
 
+    // 过滤和转义日志消息
+    $message = strip_tags($message); // 移除 HTML 和 PHP 标签
+    $message = htmlspecialchars($message, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); // 转义特殊字符
+
     // 记录错误日志
-    error_log($message . PHP_EOL, 3, $logFile);
+    error_log(date("Y/m/d/H-i-s") . ':' . $message . PHP_EOL, 3, $logFile);
 }
