@@ -290,10 +290,10 @@ class Db {
                 throw new Exception('ID does not exist');
             }
 
-            $label_id_string = implode(", ",$label_id);
-            $home_label_string = implode(", ",$home_label);
+            $label_id_string = implode(", ", $label_id);
+            $home_label_string = implode(", ", $home_label);
 
-            $command = "UPDATE {$this->home_config} SET site_name = ? , site_icon = ? , home_theme = ? , home_icon = ? , label_id = ? , home_label = ? , home_search = ? , home_login = ? , home_content = ? ";
+            $command = "UPDATE {$this->home_config} SET site_name = ?, site_icon = ?, home_theme = ?, home_icon = ?, label_id = ?, home_label = ?, home_search = ?, home_login = ?, home_content = ?";
             $this->dbUpdate($command, 'ssssssiis', [$site_name, $site_icon, $home_theme, $home_icon, $label_id_string, $home_label_string, $home_search, $home_login, $home_content], 'Update home_config failed');
         } catch (Exception $e) {
             throw new Exception('home_config update failed: ' . $e->getMessage());
@@ -317,7 +317,7 @@ class Db {
                     'default',
                     '../Akylor.ico',
                     '1, 2, 3',
-                    'About, Dropdown, Link',
+                    '[About|关于], [Product|产品], [Blog|博客]',
                     false,
                     false,
                     '&amp;lt;h1&amp;gt;Akylor&amp;lt;/h1&amp;gt;'
@@ -326,16 +326,16 @@ class Db {
                 // home_labels 创建默认配置
                 $default_labels_command = "INSERT INTO {$this->home_labels} (label_name, label_type, label_content) VALUES (?, ?, ?)";
                 $default_labels_config = [
-                    ['About', 'button', '&amp;lt;img src=&amp;#039;https://avatars.githubusercontent.com/u/30207375?v=4&amp;amp;size=64&amp;#039; alt=&amp;#039;icon&amp;#039; width=&amp;#039;80px&amp;#039; height=&amp;#039;80px&amp;#039;&amp;gt;
+                    ['[About|关于]', 'button', '&amp;lt;img src=&amp;#039;https://avatars.githubusercontent.com/u/30207375?v=4&amp;amp;size=64&amp;#039; alt=&amp;#039;icon&amp;#039; width=&amp;#039;80px&amp;#039; height=&amp;#039;80px&amp;#039;&amp;gt;
 &amp;lt;h1&amp;gt;DUQIA&amp;lt;/h1&amp;gt;
-&amp;lt;p&amp;gt;Akylor developer&amp;lt;/p&amp;gt;
+&amp;lt;p&amp;gt;[Akylor developer|Akylor 开发者]&amp;lt;/p&amp;gt;
 &amp;lt;span&amp;gt;
 &amp;lt;a class=&amp;#039;tooltip&amp;#039; href=&amp;#039;https://github.com/DUQIA&amp;#039; target=&amp;#039;_blank&amp;#039; rel=&amp;#039;nofollow noopener noreferrer&amp;#039;&amp;gt;&amp;lt;img src=&amp;#039;/content/themes/default/svg/github.svg&amp;#039; alt=&amp;#039;github&amp;#039; width=&amp;#039;25px&amp;#039; height=&amp;#039;25px&amp;#039;&amp;gt;
 &amp;lt;span class=&amp;#039;tooltip-text&amp;#039;&amp;gt;GitHub&amp;lt;/span&amp;gt;
 &amp;lt;/a&amp;gt;
 &amp;lt;/span&amp;gt;'],
-                    ['Dropdown', 'dropdown', '&amp;lt;a href=&amp;#039;https://github.com/DUQIA/Akylor&amp;#039; target=&amp;#039;_blank&amp;#039; rel=&amp;#039;nofollow noopener noreferrer&amp;#039;&amp;gt;Akylor&amp;lt;/a&amp;gt;'],
-                    ['Link', 'link', '&amp;lt;a href=&amp;#039;https://blog.akylor.us.kg&amp;#039; target=&amp;#039;_blank&amp;#039; rel=&amp;#039;nofollow noopener noreferrer&amp;#039;&amp;gt;Blog&amp;lt;/a&amp;gt;']
+                    ['[Product|产品]', 'dropdown', '&amp;lt;a href=&amp;#039;https://github.com/DUQIA/Akylor&amp;#039; target=&amp;#039;_blank&amp;#039; rel=&amp;#039;nofollow noopener noreferrer&amp;#039;&amp;gt;Akylor&amp;lt;/a&amp;gt;'],
+                    ['[Blog|博客]', 'link', '&amp;lt;a href=&amp;#039;https://blog.akylor.us.kg&amp;#039; target=&amp;#039;_blank&amp;#039; rel=&amp;#039;nofollow noopener noreferrer&amp;#039;&amp;gt;[Blog|博客]&amp;lt;/a&amp;gt;']
                 ];
                 $this->dbDeleteHomeLabelAll();
                 foreach ($default_labels_config as $label) {
@@ -388,7 +388,7 @@ class Db {
     protected function dbCreateHomeLabel(array $home_label): void
     {
         $command = "INSERT INTO {$this->home_labels} (label_name, label_type) VALUES (?, ?)";
-        $this->dbQueryTraverseInsert($command, 'ss', $home_label, 'dropdown', 'Create home_labels failed');
+        $this->dbQueryTraverseInsert($command, 'ss', $home_label, 'link', 'Create home_labels failed');
     }
 
     // home_labels 更新id
@@ -443,20 +443,20 @@ class Db {
                 $delete_ids = array_diff($existing_ids, $label_id); // 删除id
                 $Remaining_labels = array_diff_assoc($home_label, $existing_labels); // 剩余标签
                 $update_ids = array_intersect_key($label_id, $Remaining_labels); // 通过 id 更新标签
-                $update_laebels = array_intersect_key($Remaining_labels, $label_id);
+                $update_labels = array_intersect_key($Remaining_labels, $label_id);
                 $create_labels = array_diff_key($Remaining_labels, $label_id); // 创建标签
 
                 if (!empty($delete_ids)) { // 删除
                     $this->dbDeleteHomeLabel($delete_ids);
                 }
-                if (!empty($update_ids) && !empty($update_laebels)) { // 更新
-                    $this->dbUpdateHomeLabelId($update_laebels, $update_ids);
+                if (!empty($update_ids) && !empty($update_labels)) { // 更新
+                    $this->dbUpdateHomeLabelId($update_labels, $update_ids);
                 }
                 if (!empty($create_labels)) { // 创建
                     $this->dbCreateHomeLabel($create_labels);
                 }
 
-                if (!empty($delete_ids) || !empty($update_ids) && !empty($update_laebels) || $create_labels) {
+                if (!empty($delete_ids) || !empty($update_ids) && !empty($update_labels) || $create_labels) {
                     // 重新查询最新的 home_labels 数据
                     $update_data = $this->dbQueryHomeLabelAll();
                     $update_ids = array_column($update_data, 'id');

@@ -36,13 +36,33 @@ function get_theme_file(string $folder): void
     }
 }
 
+// 根据语言翻译
+function translate(string $content): string
+{
+    // 必须匹配 [|] 三个符号
+    if (preg_match('/\[([^\]]*\|[^\]]*)\]/', $content)) {
+        $result = preg_replace_callback('/\[([^\]]*)\]/', function($matches) {
+            $translates = explode("|", $matches[1]);
+        
+            // 获取用户的首选语言并进行验证
+            $language = isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2) : 'en';
+            $language = preg_replace('/[^a-zA-Z]/', '', $language); // 只允许字母
+            return ($language == 'zh') ? $translates[1] : $translates[0];
+        }, $content);
+        return $result;
+    } else {
+        return $content;
+    }
+    
+}
+
 // 标签样式
 function label_style(array $labels): void
 {
     foreach ($labels as $label) {
-        $name = htmlspecialchars($label['label_name'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+        $name = translate(htmlspecialchars($label['label_name'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'));
         $code = isset($label['label_content']) ? html_entity_decode($label['label_content'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') : '';
-        $html = html_entity_decode($code, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+        $html = translate(html_entity_decode($code, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'));
 
         switch ($label['label_type']) {
             case 'dropdown':
