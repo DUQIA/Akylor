@@ -36,6 +36,13 @@ function get_theme_file(string $folder): void
     }
 }
 
+// 判断语言
+function get_language(): string
+{
+    $language = isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2) : 'en';
+    return preg_replace('/[^a-zA-Z]/', '', $language); // 只允许字母
+}
+
 // 根据语言翻译
 function translate(string $content): string
 {
@@ -45,9 +52,7 @@ function translate(string $content): string
             $translates = explode("|", $matches[1]);
         
             // 获取用户的首选语言并进行验证
-            $language = isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2) : 'en';
-            $language = preg_replace('/[^a-zA-Z]/', '', $language); // 只允许字母
-            return ($language == 'zh') ? $translates[1] : $translates[0];
+            return (get_language() == 'zh') ? $translates[1] : $translates[0];
         }, $content);
         return $result;
     } else {
@@ -107,7 +112,7 @@ try {
 }
 ?>
 <!DOCTYPE html>
-<html>
+<html lang='<?php echo htmlspecialchars(get_language(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); ?>'>
 <head>
     <meta charset='utf-8'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
