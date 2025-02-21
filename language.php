@@ -5,7 +5,7 @@ $language = isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? substr($_SERVER['HTTP_ACCE
 $language = preg_replace('/[^a-zA-Z]/', '', $language); // 只允许字母
 
 // 定义常量
-define('LANGUAGE', $language);
+define('LANGUAGE', ($language === 'zh') ? 'zh' : 'en');
 define('TRANSLATIONS', (LANGUAGE === 'zh') ? array(
   'title' => 'Akylor-安装',
   'title_login' => 'Akylor-登录',

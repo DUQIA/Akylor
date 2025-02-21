@@ -16,7 +16,7 @@ class StatusCode {
     }
 
     // 获取更新信息
-    public function getUpdate(): string
+    public function getUpdate($translations): string
     {
         $command = 'curl -s -H "User-Agent: Mozilla/5.0 (compatible; PHP script)" ' . escapeshellarg($this->update_url);
         $output = $this->code($command);
@@ -27,10 +27,10 @@ class StatusCode {
 
         // 获取更新
         if (empty($version_data[0]['name'])) {
-            return $versions_data[1] .'<a href="https://github.com/DUQIA/Akylor/releases" alt="update" target="_blank" style="cursor: pointer; color: red;"><strong>获取失败</strong></a>';
+            return $versions_data[1] .'<a href="https://github.com/DUQIA/Akylor/releases" alt="update" target="_blank" style="cursor: pointer; color: red;"><strong>' . htmlspecialchars($translations['get_failed'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '</strong></a>';
         } elseif ($version_data[0]['name'] !== $versions_data[1]) {
             $htmlUrl = htmlspecialchars($version_data[0]['html_url'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
-            return $versions_data[1] .'<a href="' . $htmlUrl . '" alt="update" target="_blank" style="cursor: pointer; color: blue;"><strong>获取更新</strong></a>';
+            return $versions_data[1] .'<a href="' . $htmlUrl . '" alt="update" target="_blank" style="cursor: pointer; color: blue;"><strong>' . htmlspecialchars($translations['get_update'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '</strong></a>';
         } else {
             return $versions_data[1];
         }

@@ -40,7 +40,8 @@ function get_theme_file(string $folder): void
 function get_language(): string
 {
     $language = isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2) : 'en';
-    return preg_replace('/[^a-zA-Z]/', '', $language); // 只允许字母
+    $language = preg_replace('/[^a-zA-Z]/', '', $language); // 只允许字母
+    return ($language === 'zh') ? 'zh' : 'en'; // 只允许字母
 }
 
 // 根据语言翻译
@@ -52,7 +53,7 @@ function translate(string $content): string
             $translates = explode("|", $matches[1]);
         
             // 获取用户的首选语言并进行验证
-            return (get_language() == 'zh') ? $translates[1] : $translates[0];
+            return (get_language() === 'zh') ? $translates[1] : $translates[0];
         }, $content);
         return $result;
     } else {

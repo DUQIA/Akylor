@@ -452,7 +452,8 @@ window.onload = function() {
   };
   
   // 获取浏览器语言
-  let currentLang = navigator.language || navigator.userLanguage;
+  let currentLangs = navigator.language || navigator.userLanguage;
+  let currentLang = (currentLangs === 'zh-CN') ? 'zh-CN' : 'en';
   // --------------------------------------------------------------------------------
   // echarts 流量
   let chartDom1 = document.getElementById('flow');

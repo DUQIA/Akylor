@@ -324,23 +324,26 @@ class Db {
                 ];
                 $this->dbUpdate($default_command, 'ssssssiis', $default_config, 'Insert home_config default config failed');
                 // home_labels 创建默认配置
-                $default_labels_command = "INSERT INTO {$this->home_labels} (label_name, label_type, label_content) VALUES (?, ?, ?)";
+                $default_labels_command = "INSERT INTO {$this->home_labels} 
+                    (label_name, label_type, label_content) 
+                    VALUES 
+                    (?, ?, ?),
+                    (?, ?, ?),
+                    (?, ?, ?)";
                 $default_labels_config = [
-                    ['[About|关于]', 'button', '&amp;lt;img src=&amp;#039;https://avatars.githubusercontent.com/u/30207375?v=4&amp;amp;size=64&amp;#039; alt=&amp;#039;icon&amp;#039; width=&amp;#039;80px&amp;#039; height=&amp;#039;80px&amp;#039;&amp;gt;
+                    '[About|关于]', 'button', '&amp;lt;img src=&amp;#039;https://avatars.githubusercontent.com/u/30207375?v=4&amp;amp;size=64&amp;#039; alt=&amp;#039;icon&amp;#039; width=&amp;#039;80px&amp;#039; height=&amp;#039;80px&amp;#039;&amp;gt;
 &amp;lt;h1&amp;gt;DUQIA&amp;lt;/h1&amp;gt;
 &amp;lt;p&amp;gt;[Akylor developer|Akylor 开发者]&amp;lt;/p&amp;gt;
 &amp;lt;span&amp;gt;
 &amp;lt;a class=&amp;#039;tooltip&amp;#039; href=&amp;#039;https://github.com/DUQIA&amp;#039; target=&amp;#039;_blank&amp;#039; rel=&amp;#039;nofollow noopener noreferrer&amp;#039;&amp;gt;&amp;lt;img src=&amp;#039;/content/themes/default/svg/github.svg&amp;#039; alt=&amp;#039;github&amp;#039; width=&amp;#039;25px&amp;#039; height=&amp;#039;25px&amp;#039;&amp;gt;
 &amp;lt;span class=&amp;#039;tooltip-text&amp;#039;&amp;gt;GitHub&amp;lt;/span&amp;gt;
 &amp;lt;/a&amp;gt;
-&amp;lt;/span&amp;gt;'],
-                    ['[Product|产品]', 'dropdown', '&amp;lt;a href=&amp;#039;https://github.com/DUQIA/Akylor&amp;#039; target=&amp;#039;_blank&amp;#039; rel=&amp;#039;nofollow noopener noreferrer&amp;#039;&amp;gt;Akylor&amp;lt;/a&amp;gt;'],
-                    ['[Blog|博客]', 'link', '&amp;lt;a href=&amp;#039;https://blog.akylor.us.kg&amp;#039; target=&amp;#039;_blank&amp;#039; rel=&amp;#039;nofollow noopener noreferrer&amp;#039;&amp;gt;[Blog|博客]&amp;lt;/a&amp;gt;']
+&amp;lt;/span&amp;gt;',
+                    '[Product|产品]', 'dropdown', '&amp;lt;a href=&amp;#039;https://github.com/DUQIA/Akylor&amp;#039; target=&amp;#039;_blank&amp;#039; rel=&amp;#039;nofollow noopener noreferrer&amp;#039;&amp;gt;Akylor&amp;lt;/a&amp;gt;',
+                    '[Blog|博客]', 'link', '&amp;lt;a href=&amp;#039;https://blog.akylor.us.kg&amp;#039; target=&amp;#039;_blank&amp;#039; rel=&amp;#039;nofollow noopener noreferrer&amp;#039;&amp;gt;[Blog|博客]&amp;lt;/a&amp;gt;'
                 ];
                 $this->dbDeleteHomeLabelAll();
-                foreach ($default_labels_config as $label) {
-                    $this->dbUpdate($default_labels_command, 'sss', $label, 'Insert home_labels default config failed');
-                }
+                $this->dbUpdate($default_labels_command, str_repeat('s', 9), $default_labels_config, 'Insert home_labels default config failed');
                 return $this->dbQueryHomeConfig();
             }
         // 提交事务
