@@ -219,7 +219,7 @@ if ($step === 1) {
       <body>
         <div class="container">
           <h1><img src="../Akylor.ico" alt="icon" style="width: 100px;"></h1>
-          <h1><?php echo htmlspecialchars($translations['Successfully'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); ?></h1>
+          <h2><?php echo htmlspecialchars($translations['Successfully'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); ?></h2>
           <span>
             <a href="<?php echo wait(''); ?>"><?php echo htmlspecialchars($translations['home'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); ?></a>
             <a href="../login"><?php echo htmlspecialchars($translations['login'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); ?></a>

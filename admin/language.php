@@ -5,11 +5,12 @@ $language = isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? substr($_SERVER['HTTP_ACCE
 $language = preg_replace('/[^a-zA-Z]/', '', $language); // 只允许字母
 
 // 定义常量
-define('LANGUAGE', $language);
+define('LANGUAGE', ($language === 'zh') ? 'zh' : 'en');
 define('TRANSLATIONS', (LANGUAGE === 'zh') ? array(
   'title' => 'Akylor-面板',
   'dashboard' => '仪表盘',
   'home' => '主页',
+  'pass' => '密码',
   'logout' => '登出',
   'system_info' => '系统信息',
   'system_name' => '系统名称',
@@ -19,6 +20,8 @@ define('TRANSLATIONS', (LANGUAGE === 'zh') ? array(
   'machine_type' => '机器类型',
   'boot_time' => '开机时间',
   'run_time' => '运行时间',
+  'get_failed' => '获取失败',
+  'get_update' => '获取更新',
   // home
   'home_site' => '网站',
   'home_site_name' => '名称',
@@ -43,6 +46,7 @@ define('TRANSLATIONS', (LANGUAGE === 'zh') ? array(
   'title' => 'Akylor-panel',
   'dashboard' => 'Dashboard',
   'home' => 'Home',
+  'pass' => 'Password',
   'logout' => 'Logout',
   'system_info' => 'System info',
   'system_name' => 'System name',
@@ -52,6 +56,8 @@ define('TRANSLATIONS', (LANGUAGE === 'zh') ? array(
   'machine_type' => 'Machine type',
   'boot_time' => 'Boot time',
   'run_time' => 'Run time',
+  'get_failed' => 'Failed to obtain',
+  'get_update' => 'Get updates',
   // home
   'home_site' => 'Website',
   'home_site_name' => 'Name',
